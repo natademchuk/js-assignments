@@ -22,7 +22,7 @@
  *   5, 5  => 25
  */
 function getRectangleArea(width, height) {
-    throw new Error('Not implemented');
+    return (width * height);
 }
 
 
@@ -38,7 +38,7 @@ function getRectangleArea(width, height) {
  *   0    => 0
  */
 function getCicleCircumference(radius) {
-    throw new Error('Not implemented');
+    return (2 * Math.PI * radius);
 }
 
 /**
@@ -54,7 +54,7 @@ function getCicleCircumference(radius) {
  *  -3, 3  => 0
  */
 function getAverage(value1, value2) {
-    throw new Error('Not implemented');
+    return (value1 + value2) / 2;
 }
 
 /**
@@ -73,7 +73,10 @@ function getAverage(value1, value2) {
  *   (-5,0) (10,-10) => 18.027756377319946
  */
 function getDistanceBetweenPoints(x1, y1, x2, y2) {
-    throw new Error('Not implemented');
+    var a = x1 - x2
+    var b = y1 - y2
+
+    return Math.sqrt(a * a + b * b);
 }
 
 /**
@@ -89,7 +92,7 @@ function getDistanceBetweenPoints(x1, y1, x2, y2) {
  *   5*x = 0         => 0
  */
 function getLinearEquationRoot(a, b) {
-    throw new Error('Not implemented');
+    return ((-b) / a);
 }
 
 
@@ -111,7 +114,10 @@ function getLinearEquationRoot(a, b) {
  *   (0,1) (1,2)     => 0
  */
 function getAngleBetweenVectors(x1, y1, x2, y2) {
-    throw new Error('Not implemented');
+    var numerator = ((x1 * x2) + (y1 * y2));
+    var denominator = (Math.sqrt((x1 * x1) + (y1 * y1)) * Math.sqrt((x2 * x2) + (y2 * y2)));
+    var c = (numerator / denominator);
+    return Math.acos(c);
 }
 
 /**
@@ -127,7 +133,7 @@ function getAngleBetweenVectors(x1, y1, x2, y2) {
  *     0     => 0
  */
 function getLastDigit(value) {
-    throw new Error('Not implemented');
+    return (value % 10);
 }
 
 
@@ -143,7 +149,7 @@ function getLastDigit(value) {
  * '-525.5'     => -525.5
  */
 function parseNumberFromString(value) {
-    throw new Error('Not implemented');
+    return Number(value);
 }
 
 /**
@@ -160,7 +166,7 @@ function parseNumberFromString(value) {
  *   1,2,3   => 3.741657386773941
  */
 function getParallelipidedDiagonal(a, b, c) {
-    throw new Error('Not implemented');
+    return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2) + Math.pow(c, 2));
 }
 
 /**
@@ -181,7 +187,35 @@ function getParallelipidedDiagonal(a, b, c) {
  *   1678, 3  => 2000
  */
 function roundToPowerOfTen(num, pow) {
-    throw new Error('Not implemented');
+    (function() {
+        function decimalAdjust(type, value, exp) {
+            // Если степень не определена, либо равна нулю...
+            if (typeof exp === 'undefined' || +exp === 0) {
+                return Math[type](value);
+            }
+            value = +value;
+            exp = +exp;
+            // Если значение не является числом, либо степень не является целым числом...
+            if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+                return NaN;
+            }
+            // Сдвиг разрядов
+            value = value.toString().split('e');
+            value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+            // Обратный сдвиг
+            value = value.toString().split('e');
+            return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+        }
+
+        // Десятичное округление к ближайшему
+        if (!Math.round10) {
+            Math.round10 = function(value, exp) {
+                return decimalAdjust('round', value, exp);
+            };
+        }
+    })();
+
+    return Math.round10(num, pow);
 }
 
 /**
@@ -202,7 +236,14 @@ function roundToPowerOfTen(num, pow) {
  *   17 => true
  */
 function isPrime(n) {
-    throw new Error('Not implemented');
+    for (var i = 2; i < n; i++) {
+        for (var j = 2; j < i; j++) {
+            if (n % j == 0) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 /**
@@ -221,7 +262,12 @@ function isPrime(n) {
  *   toNumber(new Number(42), 0) => 42
  */
 function toNumber(value, def) {
-    throw new Error('Not implemented');
+    value = Number(value);
+    if (value >= 0) {
+        return value;
+    } else {
+        return def;
+    }
 }
 
 module.exports = {
