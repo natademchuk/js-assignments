@@ -44,7 +44,15 @@
  *
  */
 function* get99BottlesOfBeer() {
-    throw new Error('Not implemented');
+    var BottleNum = 99;
+    while (BottleNum > 1) {
+        yield `${BottleNum} bottles of beer on the wall, ${BottleNum--} bottles of beer.`;
+        yield `Take one down and pass it around, ${BottleNum} ${BottleNum > 1 ? 'bottles' : 'bottle'} of beer on the wall.`;
+    }
+    yield '1 bottle of beer on the wall, 1 bottle of beer.';
+    yield 'Take one down and pass it around, no more bottles of beer on the wall.';
+    yield 'No more bottles of beer on the wall, no more bottles of beer.';
+    yield 'Go to the store and buy some more, 99 bottles of beer on the wall.';
 }
 
 
@@ -58,7 +66,15 @@ function* get99BottlesOfBeer() {
  *
  */
 function* getFibonacciSequence() {
-    throw new Error('Not implemented');
+    var fNum1 = 0;
+    var fNum2 = 1;
+    while (true) {
+        var curr = fNum2;
+        fNum2 = fNum1;
+        fNum1 = curr + fNum2;
+        var result = yield fNum2;
+        result ? (fNum1 = 1, fNum2 = 2) : false;
+    }
 }
 
 
@@ -93,7 +109,16 @@ function* getFibonacciSequence() {
  *
  */
 function* depthTraversalTree(root) {
-    throw new Error('Not implemented');
+    const stack = [];
+    stack.push(root);
+    while (stack.length) {
+        var curr = stack.pop();
+        yield curr;
+        if (curr.children) {
+            curr.children.reverse().forEach(x =>
+                stack.push(x));
+        }
+    }
 }
 
 
@@ -119,7 +144,15 @@ function* depthTraversalTree(root) {
  *
  */
 function* breadthTraversalTree(root) {
-    throw new Error('Not implemented');
+    var queue = [
+        [root]
+    ];
+    while (queue.length > 0) {
+        for (var node of queue.shift()) {
+            yield node;
+            if (node.children) queue.push(node.children);
+        }
+    }
 }
 
 
@@ -137,7 +170,19 @@ function* breadthTraversalTree(root) {
  *   [ 1, 3, 5, ... ], [ -1 ] => [ -1, 1, 3, 5, ...]
  */
 function* mergeSortedSequences(source1, source2) {
-    throw new Error('Not implemented');
+    var g1 = source1();
+    var g2 = source2();
+    var a = g1.next();
+    var b = g2.next();
+    while (!a.done || !b.done) {
+        if ((a.value > b.value || a.value == undefined)) {
+            yield b.value;
+            b = g2.next();
+        } else if ((b.value > a.value || b.value == undefined)) {
+            yield a.value;
+            a = g1.next();
+        }
+    }
 }
 
 
